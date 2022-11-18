@@ -1,3 +1,4 @@
+using DIP_Backend.ImageOperations.PreProcessing1;
 using DIP_Backend.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -7,6 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddSingleton<InMemoryImageRepository>();
+builder.Services.AddSingleton<ColorOperations>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

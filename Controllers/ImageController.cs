@@ -1,4 +1,6 @@
 using DIP_Backend.Dtos;
+using DIP_Backend.Entities;
+using DIP_Backend.Enums;
 using DIP_Backend.ImageOperations.PreProcessing1;
 using DIP_Backend.Repositories;
 using Microsoft.AspNetCore.Mvc;
@@ -32,12 +34,14 @@ public class ImageController : ControllerBase
     }
 
     [HttpPost("PreProcessing1")]
-    public IActionResult ApplyPreProcessing1()
+    public IActionResult ApplyPreProcessing1(PreProcessing1Dto preProcessing1Dto)
     {
         //! There is 1 of 4 option in this request data
+        if (preProcessing1Dto.operationType == PreProcessing1Types.GrayScale)
+            return Ok(_colorOperations.TurnToGrayScale(_imageRepository.GetImageData()));
 
         //! 1. Turn image to gray scale
-        //! 2. Turn grey image to Blach & White with treshold value (eşik değer)
+        //! 2. Turn grey image to Black & White with treshold value (eşik değer)
         //? 3. Zoom in - Zoom out (May be handle in frontend)
         //? 4. Cut a place from image (May be handle in frontend)
 
