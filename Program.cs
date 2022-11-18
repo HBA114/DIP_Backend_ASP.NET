@@ -1,8 +1,12 @@
+using DIP_Backend.Repositories;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // http://localhost:5071/swagger/index.html
 
 // Add services to the container.
+
+builder.Services.AddSingleton<InMemoryImageRepository>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
