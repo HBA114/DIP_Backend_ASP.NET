@@ -10,10 +10,10 @@ public class InMemoryImageRepository
         imageData = new ImageData();
     }
 
-    public ImageData SetImageData(string data)
+    public ImageData SetImageData(string data, string modifiedData)
     {
         imageData.base64ImageData = data;
-        imageData.base64ModifiedImageData = data;
+        imageData.base64ModifiedImageData = modifiedData;
 
         return imageData;
     }

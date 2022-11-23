@@ -51,11 +51,11 @@ public class ColorOperations
         return imageData;
     }
 
-    public ImageData TurnToBlackAndWhiteByTresholdValue(ImageData imageData, int tresholdValue)
+    public ImageData TurnToBlackAndWhiteByTresholdValue(ImageData imageData, int? tresholdValue)
     {
         imageData = TurnToGrayScale(imageData);
 
-        string base64Image = imageData.base64ImageData;
+        string base64Image = imageData.base64ModifiedImageData;
 
         byte[] imageArray = Convert.FromBase64String(base64Image);
 
@@ -68,10 +68,14 @@ public class ColorOperations
         {
             for (int j = 0; j < width; j++)
             {
-                if (bitmap.GetPixel(i,j).Red < tresholdValue)
-                    bitmap.SetPixel(i, j, new SKColor((byte)0, (byte)0, (byte)0));
+                if (bitmap.GetPixel(i,j).Green < tresholdValue)
+                    bitmap.SetPixel(i, j, SKColors.Black);
                 else
-                    bitmap.SetPixel(i, j, new SKColor((byte)255, (byte)255, (byte)255));
+                    bitmap.SetPixel(i, j, SKColors.White);
+            
+                if (bitmap.GetPixel(i,j).Green != 0 && bitmap.GetPixel(i,j).Green != 255){
+                    Console.Beep();
+                }
             }
         }
 
