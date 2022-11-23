@@ -72,10 +72,6 @@ public class ColorOperations
                     bitmap.SetPixel(i, j, SKColors.Black);
                 else
                     bitmap.SetPixel(i, j, SKColors.White);
-            
-                if (bitmap.GetPixel(i,j).Green != 0 && bitmap.GetPixel(i,j).Green != 255){
-                    Console.Beep();
-                }
             }
         }
 

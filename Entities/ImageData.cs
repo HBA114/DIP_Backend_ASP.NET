@@ -4,6 +4,7 @@ public class ImageData
 {
     public string base64ImageData { get; set; }
     public string base64ModifiedImageData { get; set; }
+    public Dictionary<int, int>? histogram { get; set; }
 
     public ImageData()
     {

@@ -10,7 +10,7 @@ public class HistogramOperations
     {
     }
 
-    public ImageDataDto ShowHistogram(ImageData imageData)
+    public ImageData ShowHistogram(ImageData imageData)
     {
         Dictionary<int, int> _histogram = new Dictionary<int, int>();
         string base64Image = imageData.base64ModifiedImageData;
@@ -32,16 +32,12 @@ public class HistogramOperations
                     _histogram.Add(pixelValue, 1);
                 
                 if (pixelValue != 0 && pixelValue != 255){
-                    Console.Beep();
+                    Console.WriteLine("Not Good!");
                 }
             }
         }
 
-        ImageDataDto imageDataDto = new()
-        {
-            base64ImageData = imageData.base64ModifiedImageData,
-            histogram = _histogram
-        };
-        return imageDataDto;
+        imageData.histogram = _histogram;
+        return imageData;
     }
 }

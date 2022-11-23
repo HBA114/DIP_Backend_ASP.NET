@@ -39,9 +39,6 @@ public class ImageController : ControllerBase
     [HttpPost("PreProcessing1")]
     public IActionResult ApplyPreProcessing1(PreProcessing1Dto preProcessing1Dto)
     {
-        //! There is 1 of 4 option in this request data
-        // if (preProcessing1Dto.operationType == PreProcessing1Types.GrayScale)
-        //     return Ok(_colorOperations.TurnToGrayScale(_imageRepository.GetImageData()));
         ImageData imageData = _imageRepository.GetImageData();
         ImageData result;
 
@@ -56,7 +53,7 @@ public class ImageController : ControllerBase
             default:
                 return BadRequest();
         }
-        _imageRepository.SetImageData(imageData.base64ImageData, imageData.base64ModifiedImageData);
+        result = _imageRepository.SetImageData(result.base64ImageData, result.base64ModifiedImageData);
         return Ok(result);
 
         //* 1. Turn image to gray scale
@@ -68,9 +65,6 @@ public class ImageController : ControllerBase
     [HttpPost("PreProcessing2")]
     public IActionResult ApplyPreProcessing2(PreProcessing2Dto preProcessing2Dto)
     {
-        //! There is 1 of 4 option in this request data
-        // if (preProcessing1Dto.operationType == PreProcessing1Types.GrayScale)
-        //     return Ok(_colorOperations.TurnToGrayScale(_imageRepository.GetImageData()));
         ImageData imageData = _imageRepository.GetImageData();
 
         switch (preProcessing2Dto.operationType)

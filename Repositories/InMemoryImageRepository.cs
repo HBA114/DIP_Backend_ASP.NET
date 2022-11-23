@@ -4,7 +4,8 @@ namespace DIP_Backend.Repositories;
 
 public class InMemoryImageRepository
 {
-    ImageData imageData;
+    // ImageData imageData;
+    public ImageData imageData { get; set; }
     public InMemoryImageRepository()
     {
         imageData = new ImageData();
