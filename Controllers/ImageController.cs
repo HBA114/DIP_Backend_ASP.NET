@@ -26,7 +26,7 @@ public class ImageController : ControllerBase
     [HttpPost]
     public IActionResult SetImageData(ImageDataDto imageDataDto)
     {
-        var result = _imageRepository.SetImageData(imageDataDto.base64ImageData, imageDataDto.base64ImageData);
+        var result = _imageRepository.SetImageData(imageDataDto.base64ImageData!, imageDataDto.base64ImageData!, imageDataDto.fileType!);
         return Ok(result);
     }
 
@@ -53,7 +53,8 @@ public class ImageController : ControllerBase
             default:
                 return BadRequest();
         }
-        result = _imageRepository.SetImageData(result.base64ImageData, result.base64ModifiedImageData);
+
+        // result = _imageRepository.SetImageData(result.base64ImageData, result.base64ModifiedImageData);
         return Ok(result);
 
         //* 1. Turn image to gray scale
@@ -66,20 +67,35 @@ public class ImageController : ControllerBase
     public IActionResult ApplyPreProcessing2(PreProcessing2Dto preProcessing2Dto)
     {
         ImageData imageData = _imageRepository.GetImageData();
+        ImageData result;
 
         switch (preProcessing2Dto.operationType)
         {
             case PreProcessing2Types.ShowHistogram:
-                return Ok(_histogramOperations.ShowHistogram(imageData));
-            // case PreProcessing2Types.HistogramEqualization:
-            //     return Ok(_colorOperations.TurnToBlackAndWhiteByTresholdValue(imageData, preProcessing2Dto.tresholdValue));
+                result = _histogramOperations.ShowHistogram(imageData);
+                break;
+            case PreProcessing2Types.HistogramEqualization:
+                result = _histogramOperations.HistogramEqualization(imageData);
+                break;
             default:
                 return BadRequest();
         }
+
+        // _imageRepository.SetImageData(result.base64ImageData, result.base64ModifiedImageData);
+
+        return Ok(result);
 
         //! 1. Turn image to gray scale
         //! 2. Turn grey image to Black & White with treshold value (eşik değer)
         //? 3. Zoom in - Zoom out (May be handle in frontend)
         //? 4. Cut a place from image (May be handle in frontend)
+    }
+
+    [HttpPost("NextPage")]
+    public IActionResult SaveImageData(ImageDataDto imageDataDto)
+    {
+        ImageData imageData = _imageRepository.GetImageData();
+        _imageRepository.SetImageData(imageDataDto.base64ImageData!, imageDataDto.base64ImageData!, imageData.fileType!);
+        return Ok();
     }
 }

@@ -1,4 +1,5 @@
 using DIP_Backend.Entities;
+using DIP_Backend.ImageOperations.BaseOperations;
 using SkiaSharp;
 
 namespace DIP_Backend.ImageOperations.PreProcessing1;
@@ -20,12 +21,12 @@ public class ColorOperations
 
         SKBitmap bitmap = SKBitmap.Decode(imageArray);
 
-        int height = bitmap.Height;
-        int width = bitmap.Width;
+        int x = bitmap.Width;
+        int y = bitmap.Height;
 
-        for (int i = 0; i < height; i++)
+        for (int i = 0; i < x; i++)
         {
-            for (int j = 0; j < width; j++)
+            for (int j = 0; j < y; j++)
             {
                 int sum = 0;
                 sum += bitmap.GetPixel(i, j).Red;
@@ -36,18 +37,7 @@ public class ColorOperations
             }
         }
 
-        FileStream output = File.OpenWrite("modifiedImage.jpeg");
-        SKManagedWStream outputStream = new SKManagedWStream(output);
-
-        bitmap.Encode(outputStream, format: SKEncodedImageFormat.Jpeg, quality: 100);
-
-        outputStream.Dispose();
-        output.Close();
-
-        byte[] imageArray1 = File.ReadAllBytes("modifiedImage.jpeg");
-
-        imageData.base64ModifiedImageData = Convert.ToBase64String(imageArray1);
-        File.Delete("modifiedImage.jpeg");
+        imageData.base64ModifiedImageData = BitmapToBase64.GetBase64Image(bitmap, imageData);
         return imageData;
     }
 
@@ -61,32 +51,21 @@ public class ColorOperations
 
         SKBitmap bitmap = SKBitmap.Decode(imageArray);
 
-        int height = bitmap.Height;
-        int width = bitmap.Width;
+        int x = bitmap.Width;
+        int y = bitmap.Height;
 
-        for (int i = 0; i < height; i++)
+        for (int i = 0; i < x; i++)
         {
-            for (int j = 0; j < width; j++)
+            for (int j = 0; j < y; j++)
             {
-                if (bitmap.GetPixel(i,j).Green < tresholdValue)
+                if (bitmap.GetPixel(i, j).Green < tresholdValue)
                     bitmap.SetPixel(i, j, SKColors.Black);
                 else
                     bitmap.SetPixel(i, j, SKColors.White);
             }
         }
 
-        FileStream output = File.OpenWrite("modifiedImage.jpeg");
-        SKManagedWStream outputStream = new SKManagedWStream(output);
-
-        bitmap.Encode(outputStream, format: SKEncodedImageFormat.Jpeg, quality: 100);
-
-        outputStream.Dispose();
-        output.Close();
-
-        byte[] imageArray1 = File.ReadAllBytes("modifiedImage.jpeg");
-
-        imageData.base64ModifiedImageData = Convert.ToBase64String(imageArray1);
-        File.Delete("modifiedImage.jpeg");
+        imageData.base64ModifiedImageData = BitmapToBase64.GetBase64Image(bitmap, imageData);
         return imageData;
     }
 }
