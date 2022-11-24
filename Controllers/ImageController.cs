@@ -1,6 +1,7 @@
 using DIP_Backend.Dtos;
 using DIP_Backend.Entities;
 using DIP_Backend.Enums;
+using DIP_Backend.ImageOperations.Filter;
 using DIP_Backend.ImageOperations.PreProcessing1;
 using DIP_Backend.ImageOperations.PreProcessing2;
 using DIP_Backend.Repositories;
@@ -15,12 +16,14 @@ public class ImageController : ControllerBase
     InMemoryImageRepository _imageRepository;
     ColorOperations _colorOperations;
     HistogramOperations _histogramOperations;
+    FilterOperations _filterOPerations;
 
-    public ImageController(InMemoryImageRepository imageRepository, ColorOperations colorOperations, HistogramOperations histogramOperations)
+    public ImageController(InMemoryImageRepository imageRepository, ColorOperations colorOperations, HistogramOperations histogramOperations, FilterOperations filterOperations)
     {
         _imageRepository = imageRepository;
         _colorOperations = colorOperations;
         _histogramOperations = histogramOperations;
+        _filterOPerations = filterOperations;
     }
 
     [HttpPost]
@@ -44,23 +47,17 @@ public class ImageController : ControllerBase
 
         switch (preProcessing1Dto.operationType)
         {
-            case PreProcessing1Types.GrayScale:
+            case PreProcessing1Type.GrayScale:
                 result = _colorOperations.TurnToGrayScale(imageData);
                 break;
-            case PreProcessing1Types.BlackWhite:
+            case PreProcessing1Type.BlackWhite:
                 result = _colorOperations.TurnToBlackAndWhiteByTresholdValue(imageData, preProcessing1Dto.tresholdValue);
                 break;
             default:
                 return BadRequest();
         }
 
-        // result = _imageRepository.SetImageData(result.base64ImageData, result.base64ModifiedImageData);
         return Ok(result);
-
-        //* 1. Turn image to gray scale
-        //* 2. Turn grey image to Black & White with treshold value (eşik değer)
-        //! 3. Zoom in - Zoom out (May be handle in frontend)
-        //! 4. Cut a place from image (May be handle in frontend)
     }
 
     [HttpPost("PreProcessing2")]
@@ -71,25 +68,47 @@ public class ImageController : ControllerBase
 
         switch (preProcessing2Dto.operationType)
         {
-            case PreProcessing2Types.ShowHistogram:
+            case PreProcessing2Type.ShowHistogram:
                 result = _histogramOperations.ShowHistogram(imageData);
                 break;
-            case PreProcessing2Types.HistogramEqualization:
+            case PreProcessing2Type.HistogramEqualization:
                 result = _histogramOperations.HistogramEqualization(imageData);
                 break;
             default:
                 return BadRequest();
         }
 
-        // _imageRepository.SetImageData(result.base64ImageData, result.base64ModifiedImageData);
+        return Ok(result);
+    }
+
+    [HttpPost("Filters")]
+    public IActionResult ApplyFilters(FilterDto filterDto)
+    {
+        ImageData imageData = _imageRepository.GetImageData();
+        ImageData result;
+
+        switch (filterDto.filterType)
+        {
+            case FilterType.GaussianBlur:
+                result = _filterOPerations.GaussianBlur(imageData, 0);
+                break;
+            case FilterType.Sharpness:
+                result = _filterOPerations.Sharpness(imageData);
+                break;
+            case FilterType.EdgeDetect:
+                result = _filterOPerations.EdgeDetect(imageData);
+                break;
+            case FilterType.Mean:
+                result = _filterOPerations.Mean(imageData);
+                break;
+            default:
+                return BadRequest();
+        }
 
         return Ok(result);
-
-        //! 1. Turn image to gray scale
-        //! 2. Turn grey image to Black & White with treshold value (eşik değer)
-        //? 3. Zoom in - Zoom out (May be handle in frontend)
-        //? 4. Cut a place from image (May be handle in frontend)
     }
+
+
 
     [HttpPost("NextPage")]
     public IActionResult SaveImageData(ImageDataDto imageDataDto)

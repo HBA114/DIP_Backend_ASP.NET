@@ -1,6 +1,6 @@
 namespace DIP_Backend.Enums;
 
-public enum PreProcessing2Types
+public enum PreProcessing2Type
 {
     ShowHistogram,
     HistogramEqualization,

@@ -3,7 +3,7 @@ using SkiaSharp;
 
 namespace DIP_Backend.ImageOperations.BaseOperations;
 
-public static class BitmapToBase64
+public static class BitmapAndBase64
 {
     public static string GetBase64Image(SKBitmap bitmap, ImageData imageData){
         string fileType = imageData.fileType!;
@@ -30,5 +30,12 @@ public static class BitmapToBase64
 
         File.Delete(outputFileName);
         return Convert.ToBase64String(imageArray1);
+    }
+
+    public static SKBitmap GetBitmap(string base64Image)
+    {
+        byte[] imageArray = Convert.FromBase64String(base64Image);
+
+        return SKBitmap.Decode(imageArray);
     }
 }

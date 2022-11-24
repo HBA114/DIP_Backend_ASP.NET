@@ -14,11 +14,12 @@ public class HistogramOperations
     public ImageData ShowHistogram(ImageData imageData)
     {
         Dictionary<int, int> _histogram = new Dictionary<int, int>();
-        string base64Image = imageData.base64ImageData;
-        imageData.base64ModifiedImageData = base64Image;
-        byte[] imageArray = Convert.FromBase64String(base64Image);
+        // string base64Image = imageData.base64ImageData;
+        // imageData.base64ModifiedImageData = base64Image;
+        // byte[] imageArray = Convert.FromBase64String(base64Image);
 
-        SKBitmap bitmap = SKBitmap.Decode(imageArray);
+        // SKBitmap bitmap = SKBitmap.Decode(imageArray);
+        SKBitmap bitmap = BitmapAndBase64.GetBitmap(imageData.base64ImageData);
 
         int x = bitmap.Width;
         int y = bitmap.Height;
@@ -32,10 +33,6 @@ public class HistogramOperations
                     _histogram[pixelValue] += 1;
                 else
                     _histogram.Add(pixelValue, 1);
-
-                // if (pixelValue != 0 && pixelValue != 255){
-                //     Console.WriteLine("Not Good!");
-                // }
             }
         }
         _histogram = _histogram.OrderBy(h => h.Key).ToDictionary(h => h.Key, h => h.Value);
@@ -45,12 +42,13 @@ public class HistogramOperations
 
     public ImageData HistogramEqualization(ImageData imageData)
     {
-        string base64Image = imageData.base64ImageData;
-        byte[] imageArray = Convert.FromBase64String(base64Image);
+        // string base64Image = imageData.base64ImageData;
+        // byte[] imageArray = Convert.FromBase64String(base64Image);
 
         Dictionary<int, int> _histogram = ShowHistogram(imageData).histogram!;
 
-        SKBitmap bitmap = SKBitmap.Decode(imageArray);
+        // SKBitmap bitmap = SKBitmap.Decode(imageArray);
+        SKBitmap bitmap = BitmapAndBase64.GetBitmap(imageData.base64ImageData);
 
         List<HistogramEqualizeTable> table = new List<HistogramEqualizeTable>();
 
@@ -98,7 +96,7 @@ public class HistogramOperations
             ", Cumulative Probability : " + item.CumulativeProbability + ", New Tone : " + item.NewGrayTone);
         }
 
-        imageData.base64ModifiedImageData = BitmapToBase64.GetBase64Image(bitmap, imageData);
+        imageData.base64ModifiedImageData = BitmapAndBase64.GetBase64Image(bitmap, imageData);
         return imageData;
     }
 }

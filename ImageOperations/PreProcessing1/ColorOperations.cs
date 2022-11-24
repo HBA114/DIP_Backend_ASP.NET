@@ -15,11 +15,12 @@ public class ColorOperations
     {
         //TODO: turn base64 image data to byte array (save then read as bytes) 
         //TODO: and modify pixel values
-        string base64Image = imageData.base64ImageData;
+        // string base64Image = imageData.base64ImageData;
 
-        byte[] imageArray = Convert.FromBase64String(base64Image);
+        // byte[] imageArray = Convert.FromBase64String(base64Image);
 
-        SKBitmap bitmap = SKBitmap.Decode(imageArray);
+        // SKBitmap bitmap = SKBitmap.Decode(imageArray);
+        SKBitmap bitmap = BitmapAndBase64.GetBitmap(imageData.base64ImageData);
 
         int x = bitmap.Width;
         int y = bitmap.Height;
@@ -37,7 +38,7 @@ public class ColorOperations
             }
         }
 
-        imageData.base64ModifiedImageData = BitmapToBase64.GetBase64Image(bitmap, imageData);
+        imageData.base64ModifiedImageData = BitmapAndBase64.GetBase64Image(bitmap, imageData);
         return imageData;
     }
 
@@ -45,11 +46,12 @@ public class ColorOperations
     {
         imageData = TurnToGrayScale(imageData);
 
-        string base64Image = imageData.base64ModifiedImageData;
+        // string base64Image = imageData.base64ModifiedImageData;
 
-        byte[] imageArray = Convert.FromBase64String(base64Image);
+        // byte[] imageArray = Convert.FromBase64String(base64Image);
 
-        SKBitmap bitmap = SKBitmap.Decode(imageArray);
+        // SKBitmap bitmap = SKBitmap.Decode(imageArray);
+        SKBitmap bitmap = BitmapAndBase64.GetBitmap(imageData.base64ModifiedImageData);
 
         int x = bitmap.Width;
         int y = bitmap.Height;
@@ -65,7 +67,7 @@ public class ColorOperations
             }
         }
 
-        imageData.base64ModifiedImageData = BitmapToBase64.GetBase64Image(bitmap, imageData);
+        imageData.base64ModifiedImageData = BitmapAndBase64.GetBase64Image(bitmap, imageData);
         return imageData;
     }
 }

@@ -1,6 +1,6 @@
 namespace DIP_Backend.Enums;
 
-public enum PreProcessing1Types
+public enum PreProcessing1Type
 {
     GrayScale,
     BlackWhite
