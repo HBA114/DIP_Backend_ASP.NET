@@ -94,7 +94,7 @@ public class ImageController : ControllerBase
     }
 
     [HttpPost("Filters")]
-    public IActionResult ApplyFilters(FilterDto filterDto)
+    public async Task<IActionResult> ApplyFilters(FilterDto filterDto)
     {
         ImageData imageData = _imageRepository.GetImageData();
         ImageData result = new()
@@ -107,7 +107,8 @@ public class ImageController : ControllerBase
 
         if (filterDto.filterType == FilterType.Mean)
         {
-            result = _filterOperations.Mean(result);
+            Task<ImageData> rt = _filterOperations.Mean(result);
+            result = await rt;
         }
 
         if (filterDto.filterType == FilterType.Median)
