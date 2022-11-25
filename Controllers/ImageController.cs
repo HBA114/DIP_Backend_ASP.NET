@@ -16,14 +16,14 @@ public class ImageController : ControllerBase
     InMemoryImageRepository _imageRepository;
     ColorOperations _colorOperations;
     HistogramOperations _histogramOperations;
-    FilterOperations _filterOPerations;
+    FilterOperations _filterOperations;
 
     public ImageController(InMemoryImageRepository imageRepository, ColorOperations colorOperations, HistogramOperations histogramOperations, FilterOperations filterOperations)
     {
         _imageRepository = imageRepository;
         _colorOperations = colorOperations;
         _histogramOperations = histogramOperations;
-        _filterOPerations = filterOperations;
+        _filterOperations = filterOperations;
     }
 
     [HttpPost]
@@ -90,16 +90,16 @@ public class ImageController : ControllerBase
         switch (filterDto.filterType)
         {
             case FilterType.GaussianBlur:
-                result = _filterOPerations.GaussianBlur(imageData, 0);
+                result = _filterOperations.GaussianBlur(imageData, 0);
                 break;
             case FilterType.Sharpness:
-                result = _filterOPerations.Sharpness(imageData);
+                result = _filterOperations.Sharpness(imageData);
                 break;
             case FilterType.EdgeDetect:
-                result = _filterOPerations.EdgeDetect(imageData);
+                result = _filterOperations.EdgeDetect(imageData);
                 break;
             case FilterType.Mean:
-                result = _filterOPerations.Mean(imageData);
+                result = _filterOperations.Mean(imageData);
                 break;
             default:
                 return BadRequest();
