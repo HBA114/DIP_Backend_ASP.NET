@@ -43,7 +43,8 @@ public class ImageController : ControllerBase
     public IActionResult ApplyPreProcessing1(PreProcessing1Dto preProcessing1Dto)
     {
         ImageData imageData = _imageRepository.GetImageData();
-        ImageData result = new(){
+        ImageData result = new()
+        {
             base64ImageData = imageData.base64ImageData,
             base64ModifiedImageData = imageData.base64ModifiedImageData,
             fileType = imageData.fileType,
@@ -69,7 +70,8 @@ public class ImageController : ControllerBase
     public IActionResult ApplyPreProcessing2(PreProcessing2Dto preProcessing2Dto)
     {
         ImageData imageData = _imageRepository.GetImageData();
-        ImageData result = new(){
+        ImageData result = new()
+        {
             base64ImageData = imageData.base64ImageData,
             base64ModifiedImageData = imageData.base64ModifiedImageData,
             fileType = imageData.fileType,
@@ -95,33 +97,44 @@ public class ImageController : ControllerBase
     public IActionResult ApplyFilters(FilterDto filterDto)
     {
         ImageData imageData = _imageRepository.GetImageData();
-        ImageData result = new(){
+        ImageData result = new()
+        {
             base64ImageData = imageData.base64ImageData,
             base64ModifiedImageData = imageData.base64ModifiedImageData,
             fileType = imageData.fileType,
             histogram = imageData.histogram
         };
 
-        switch (filterDto.filterType)
+        if (filterDto.filterType == FilterType.Mean)
         {
-            case FilterType.GaussianBlur:
-                result = _filterOperations.GaussianBlur(result, 0);
-                break;
-            case FilterType.Sharpness:
-                result = _filterOperations.Sharpness(result);
-                break;
-            case FilterType.EdgeDetect:
-                result = _filterOperations.EdgeDetect(result);
-                break;
-            case FilterType.Mean:
-                result = _filterOperations.Mean(result);
-                break;
-            case FilterType.Median:
-                result = _filterOperations.Median(result);
-                break;
-            default:
-                return BadRequest();
+            result = _filterOperations.Mean(result);
         }
+
+        if (filterDto.filterType == FilterType.Median)
+        {
+            result = _filterOperations.Median(result);
+        }
+
+        // switch (filterDto.filterType)
+        // {
+        //     case FilterType.GaussianBlur:
+        //         result = _filterOperations.GaussianBlur(result, 0);
+        //         break;
+        //     case FilterType.Sharpness:
+        //         result = _filterOperations.Sharpness(result);
+        //         break;
+        //     case FilterType.EdgeDetect:
+        //         result = _filterOperations.EdgeDetect(result);
+        //         break;
+        //     case FilterType.Mean:
+        //         result = _filterOperations.Mean(result);
+        //         break;
+        //     case FilterType.Median:
+        //         result = _filterOperations.Median(result);
+        //         break;
+        //     default:
+        //         return BadRequest();
+        // }
 
         return Ok(result);
     }

@@ -30,7 +30,7 @@ public class FilterOperations
     public ImageData Mean(ImageData imageData)
     {
         //! 6x6 Mean Filter
-        SKBitmap bitmap = BitmapAndBase64.GetBitmap(imageData.base64ModifiedImageData);
+        SKBitmap bitmap = BitmapAndBase64.GetBitmap(imageData.base64ImageData);
         int x = bitmap.Width;
         int y = bitmap.Height;
 
@@ -39,8 +39,6 @@ public class FilterOperations
             for (int j = 0; j < y; j++)
             {
                 //* gets every pixel
-                // assuming gray image
-                //! Edge pixels not calculation not implemented yet
                 int sumRed = 0;
                 int sumGreen = 0;
                 int sumBlue = 0;
@@ -76,6 +74,7 @@ public class FilterOperations
             }
         }
 
+        //! Code mostly can not reach here
         imageData.base64ModifiedImageData = BitmapAndBase64.GetBase64Image(bitmap, imageData);
 
         return imageData;
