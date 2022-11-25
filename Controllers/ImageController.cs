@@ -105,37 +105,37 @@ public class ImageController : ControllerBase
             histogram = imageData.histogram
         };
 
-        if (filterDto.filterType == FilterType.Mean)
-        {
-            Task<ImageData> rt = _filterOperations.Mean(result);
-            result = await rt;
-        }
-
-        if (filterDto.filterType == FilterType.Median)
-        {
-            result = _filterOperations.Median(result);
-        }
-
-        // switch (filterDto.filterType)
+        // if (filterDto.filterType == FilterType.Mean)
         // {
-        //     case FilterType.GaussianBlur:
-        //         result = _filterOperations.GaussianBlur(result, 0);
-        //         break;
-        //     case FilterType.Sharpness:
-        //         result = _filterOperations.Sharpness(result);
-        //         break;
-        //     case FilterType.EdgeDetect:
-        //         result = _filterOperations.EdgeDetect(result);
-        //         break;
-        //     case FilterType.Mean:
-        //         result = _filterOperations.Mean(result);
-        //         break;
-        //     case FilterType.Median:
-        //         result = _filterOperations.Median(result);
-        //         break;
-        //     default:
-        //         return BadRequest();
+        //     Task<ImageData> rt = _filterOperations.Mean(result);
+        //     result = await rt;
         // }
+
+        // if (filterDto.filterType == FilterType.Median)
+        // {
+        //     result = _filterOperations.Median(result);
+        // }
+
+        switch (filterDto.filterType)
+        {
+            case FilterType.GaussianBlur:
+                result = _filterOperations.GaussianBlur(result, 0);
+                break;
+            case FilterType.Sharpness:
+                result = _filterOperations.Sharpness(result);
+                break;
+            case FilterType.EdgeDetect:
+                result = _filterOperations.EdgeDetect(result);
+                break;
+            case FilterType.Mean:
+                result = await _filterOperations.Mean(result);
+                break;
+            case FilterType.Median:
+                result = await _filterOperations.Median(result);
+                break;
+            default:
+                return BadRequest();
+        }
 
         return Ok(result);
     }
