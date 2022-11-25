@@ -101,6 +101,9 @@ public class ImageController : ControllerBase
             case FilterType.Mean:
                 result = _filterOperations.Mean(imageData);
                 break;
+            case FilterType.Median:
+                result = _filterOperations.Median(imageData);
+                break;
             default:
                 return BadRequest();
         }

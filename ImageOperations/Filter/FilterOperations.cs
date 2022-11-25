@@ -80,4 +80,70 @@ public class FilterOperations
 
         return imageData;
     }
+
+    public ImageData Median(ImageData imageData)
+    {
+        SKBitmap bitmap = BitmapAndBase64.GetBitmap(imageData.base64ModifiedImageData);
+        int x = bitmap.Width;
+        int y = bitmap.Height;
+
+        for (int i = 3; i < x - 3; i++)
+        {
+            for (int j = 3; j < y - 3; j++)
+            {
+                //* gets every pixel
+                // assuming gray image
+                //! Edge pixels not calculation not implemented yet
+                List<int> listRed = new List<int>();
+                List<int> listGreen = new List<int>();
+                List<int> listBlue = new List<int>();
+                for (int ix = i - 3; ix < i + 3; ix++)
+                {
+                    for (int jy = j - 3; jy < j + 3; jy++)
+                    {
+                        listRed.Add(bitmap.GetPixel(ix, jy).Red);
+                        listGreen.Add(bitmap.GetPixel(ix, jy).Green);
+                        listBlue.Add(bitmap.GetPixel(ix, jy).Blue);
+                    }
+                }
+
+                listRed.Sort();
+                listGreen.Sort();
+                listBlue.Sort();
+                int newRed = 0, newGreen = 0, newBlue = 0;
+
+                if (listRed.Count % 2 == 0)
+                {
+                    newRed = (listRed[listRed.Count / 2] + listRed[(listRed.Count / 2) + 1]) / 2;
+                }
+                else
+                {
+                    newRed = listRed[listRed.Count / 2];
+                }
+
+                if (listGreen.Count % 2 == 0)
+                {
+                    newGreen = (listGreen[listGreen.Count / 2] + listGreen[(listGreen.Count / 2) + 1]) / 2;
+                }
+                else
+                {
+                    newGreen = listGreen[listGreen.Count / 2];
+                }
+
+                if (listBlue.Count % 2 == 0)
+                {
+                    newBlue = (listBlue[listBlue.Count / 2] + listBlue[(listBlue.Count / 2) + 1]) / 2;
+                }
+                else
+                {
+                    newBlue = listBlue[listBlue.Count / 2];
+                }
+
+                bitmap.SetPixel(i, j, new SKColor((byte)(newRed), (byte)(newGreen), (byte)(newBlue)));
+            }
+        }
+
+        imageData.base64ModifiedImageData = BitmapAndBase64.GetBase64Image(bitmap, imageData);
+        return imageData;
+    }
 }
