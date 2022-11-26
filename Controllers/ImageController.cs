@@ -105,17 +105,6 @@ public class ImageController : ControllerBase
             histogram = imageData.histogram
         };
 
-        // if (filterDto.filterType == FilterType.Mean)
-        // {
-        //     Task<ImageData> rt = _filterOperations.Mean(result);
-        //     result = await rt;
-        // }
-
-        // if (filterDto.filterType == FilterType.Median)
-        // {
-        //     result = _filterOperations.Median(result);
-        // }
-
         switch (filterDto.filterType)
         {
             case FilterType.GaussianBlur:
