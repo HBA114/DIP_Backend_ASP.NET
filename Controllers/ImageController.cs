@@ -122,7 +122,7 @@ public class ImageController : ControllerBase
                 result = _filterOperations.GaussianBlur(result, 0);
                 break;
             case FilterType.Sharpness:
-                result = _filterOperations.Sharpness(result);
+                result = await _filterOperations.Sharpening(result);
                 break;
             case FilterType.EdgeDetect:
                 result = _filterOperations.EdgeDetect(result);

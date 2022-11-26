@@ -16,8 +16,55 @@ public class FilterOperations
         return imageData;
     }
 
-    public ImageData Sharpness(ImageData imageData)
+    public async Task<ImageData> Sharpening(ImageData imageData)
     {
+        SKBitmap bitmap = BitmapAndBase64.GetBitmap(imageData.base64ModifiedImageData);
+        int x = bitmap.Width;
+        int y = bitmap.Height;
+
+        await Task.Run(() =>
+        {
+            for (int i = 0; i < x; i++)
+            {
+                for (int j = 0; j < y; j++)
+                {
+                    int sumRed = 0;
+                    int sumGreen = 0;
+                    int sumBlue = 0;
+                    if (i > 1 && i < x - 1 && j > 1 && j < y - 1)
+                    {
+                        for (int ix = i - 1; ix <= i + 1; ix++)
+                        {
+                            for (int jy = j - 1; jy <= j + 1; jy++)
+                            {
+                                if ((ix >= 0 && ix <= x) && (jy >= 0 && jy <= y))
+                                {
+                                    if (ix == i && jy == j)
+                                    {
+                                        sumRed += 9 * bitmap.GetPixel(ix, jy).Red;
+                                        sumGreen += 9 * bitmap.GetPixel(ix, jy).Green;
+                                        sumBlue += 9 * bitmap.GetPixel(ix, jy).Blue;
+                                    }
+                                    else
+                                    {
+                                        sumRed -= bitmap.GetPixel(ix, jy).Red;
+                                        sumGreen -= bitmap.GetPixel(ix, jy).Green;
+                                        sumBlue -= bitmap.GetPixel(ix, jy).Blue;
+                                    }
+                                }
+                            }
+                        }
+                        bitmap.SetPixel(i, j, new SKColor((byte)(sumRed), (byte)(sumGreen), (byte)(sumBlue)));
+
+                        //! it seems to be works but try with larger than 3x3 filter
+                        // if (bitmap.GetPixel(i, j).Red != sumRed && bitmap.GetPixel(i, j).Green != sumGreen && bitmap.GetPixel(i, j).Blue != sumBlue)
+                        // {
+                        //     Console.WriteLine("Changed in Sharpening");
+                        // }
+                    }
+                }
+            }
+        });
 
         return imageData;
     }
@@ -30,7 +77,7 @@ public class FilterOperations
     public async Task<ImageData> Mean(ImageData imageData)
     {
         //! 6x6 Mean Filter
-        SKBitmap bitmap = BitmapAndBase64.GetBitmap(imageData.base64ImageData);
+        SKBitmap bitmap = BitmapAndBase64.GetBitmap(imageData.base64ModifiedImageData);
         int x = bitmap.Width;
         int y = bitmap.Height;
 
