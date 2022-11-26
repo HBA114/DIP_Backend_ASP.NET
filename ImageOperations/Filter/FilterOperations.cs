@@ -19,8 +19,11 @@ public class FilterOperations
     public async Task<ImageData> Sharpening(ImageData imageData)
     {
         SKBitmap bitmap = BitmapAndBase64.GetBitmap(imageData.base64ModifiedImageData);
+        SKBitmap bitmapOriginal = BitmapAndBase64.GetBitmap(imageData.base64ModifiedImageData);
         int x = bitmap.Width;
         int y = bitmap.Height;
+
+        // int filterSize = 1; // 3x3
 
         await Task.Run(() =>
         {
@@ -41,16 +44,22 @@ public class FilterOperations
                                 {
                                     if (ix == i && jy == j)
                                     {
-                                        sumRed += 9 * bitmap.GetPixel(ix, jy).Red;
-                                        sumGreen += 9 * bitmap.GetPixel(ix, jy).Green;
-                                        sumBlue += 9 * bitmap.GetPixel(ix, jy).Blue;
+                                        sumRed += 9 * bitmapOriginal.GetPixel(ix, jy).Red;
+                                        sumGreen += 9 * bitmapOriginal.GetPixel(ix, jy).Green;
+                                        sumBlue += 9 * bitmapOriginal.GetPixel(ix, jy).Blue;
                                     }
                                     else
                                     {
-                                        sumRed -= bitmap.GetPixel(ix, jy).Red;
-                                        sumGreen -= bitmap.GetPixel(ix, jy).Green;
-                                        sumBlue -= bitmap.GetPixel(ix, jy).Blue;
+                                        sumRed -= bitmapOriginal.GetPixel(ix, jy).Red;
+                                        sumGreen -= bitmapOriginal.GetPixel(ix, jy).Green;
+                                        sumBlue -= bitmapOriginal.GetPixel(ix, jy).Blue;
                                     }
+                                    // else if ((ix == i - 1 || ix == i + 1) && (jy == j - 1 || jy == j + 1))
+                                    // {
+                                    //     sumRed -= bitmapOriginal.GetPixel(ix, jy).Red;
+                                    //     sumGreen -= bitmapOriginal.GetPixel(ix, jy).Green;
+                                    //     sumBlue -= bitmapOriginal.GetPixel(ix, jy).Blue;
+                                    // }
                                 }
                             }
                         }
@@ -66,6 +75,8 @@ public class FilterOperations
             }
         });
 
+        imageData.base64ModifiedImageData = BitmapAndBase64.GetBase64Image(bitmap, imageData);
+
         return imageData;
     }
 
@@ -78,6 +89,8 @@ public class FilterOperations
     {
         //! 6x6 Mean Filter
         SKBitmap bitmap = BitmapAndBase64.GetBitmap(imageData.base64ModifiedImageData);
+        SKBitmap originalBitmap = BitmapAndBase64.GetBitmap(imageData.base64ModifiedImageData);
+
         int x = bitmap.Width;
         int y = bitmap.Height;
 
@@ -98,9 +111,9 @@ public class FilterOperations
                         {
                             if ((ix >= 0 && ix <= x) && (jy >= 0 && jy <= y))
                             {
-                                sumRed += bitmap.GetPixel(ix, jy).Red;
-                                sumGreen += bitmap.GetPixel(ix, jy).Green;
-                                sumBlue += bitmap.GetPixel(ix, jy).Blue;
+                                sumRed += originalBitmap.GetPixel(ix, jy).Red;
+                                sumGreen += originalBitmap.GetPixel(ix, jy).Green;
+                                sumBlue += originalBitmap.GetPixel(ix, jy).Blue;
                                 readedPixelCount++;
                             }
                         }
@@ -173,6 +186,7 @@ public class FilterOperations
     public async Task<ImageData> Median(ImageData imageData)
     {
         SKBitmap bitmap = BitmapAndBase64.GetBitmap(imageData.base64ModifiedImageData);
+        SKBitmap originalBitmap = BitmapAndBase64.GetBitmap(imageData.base64ModifiedImageData);
         int x = bitmap.Width;
         int y = bitmap.Height;
 
@@ -192,9 +206,9 @@ public class FilterOperations
                     {
                         for (int jy = j - 3; jy < j + 3; jy++)
                         {
-                            listRed.Add(bitmap.GetPixel(ix, jy).Red);
-                            listGreen.Add(bitmap.GetPixel(ix, jy).Green);
-                            listBlue.Add(bitmap.GetPixel(ix, jy).Blue);
+                            listRed.Add(originalBitmap.GetPixel(ix, jy).Red);
+                            listGreen.Add(originalBitmap.GetPixel(ix, jy).Green);
+                            listBlue.Add(originalBitmap.GetPixel(ix, jy).Blue);
                         }
                     }
 

@@ -1,7 +1,9 @@
 using DIP_Backend.Dtos;
 using DIP_Backend.Entities;
 using DIP_Backend.Enums;
+using DIP_Backend.ImageOperations.BaseOperations;
 using DIP_Backend.ImageOperations.Filter;
+using DIP_Backend.ImageOperations.Morphological;
 using DIP_Backend.ImageOperations.PreProcessing1;
 using DIP_Backend.ImageOperations.PreProcessing2;
 using DIP_Backend.Repositories;
@@ -14,16 +16,20 @@ namespace DIP_Backend.Controllers;
 public class ImageController : ControllerBase
 {
     InMemoryImageRepository _imageRepository;
+    BasicOperations _basicOperations;
     ColorOperations _colorOperations;
     HistogramOperations _histogramOperations;
     FilterOperations _filterOperations;
+    MorphologicalOperations _morphologicalOperations;
 
-    public ImageController(InMemoryImageRepository imageRepository, ColorOperations colorOperations, HistogramOperations histogramOperations, FilterOperations filterOperations)
+    public ImageController(InMemoryImageRepository imageRepository, BasicOperations basicOperations, ColorOperations colorOperations, HistogramOperations histogramOperations, FilterOperations filterOperations, MorphologicalOperations morphologicalOperations)
     {
         _imageRepository = imageRepository;
+        _basicOperations = basicOperations;
         _colorOperations = colorOperations;
         _histogramOperations = histogramOperations;
         _filterOperations = filterOperations;
+        _morphologicalOperations = morphologicalOperations;
     }
 
     [HttpPost]
@@ -129,6 +135,11 @@ public class ImageController : ControllerBase
         return Ok(result);
     }
 
+    [HttpPost("Morphological")]
+    public IActionResult Morphological()
+    {
+        return Ok();
+    }
 
 
     [HttpPost("NextPage")]
@@ -136,6 +147,19 @@ public class ImageController : ControllerBase
     {
         ImageData imageData = _imageRepository.GetImageData();
         _imageRepository.SetImageData(imageDataDto.base64ImageData!, imageDataDto.base64ImageData!, imageData.fileType!);
+        return Ok();
+    }
+
+    [HttpPost("SaveFile")]
+    public async Task<IActionResult> SaveToFileAsync(ImageDataDto imageDataDto)
+    {
+        ImageData imageData = new()
+        {
+            base64ImageData = imageDataDto.base64ImageData!,
+            base64ModifiedImageData = imageDataDto.base64ImageData!,
+            fileType = imageDataDto.fileType
+        };
+        await _basicOperations.SaveImageToFile(imageData, imageData.fileType!);
         return Ok();
     }
 }
