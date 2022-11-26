@@ -136,9 +136,32 @@ public class ImageController : ControllerBase
     }
 
     [HttpPost("Morphological")]
-    public IActionResult Morphological()
+    public async Task<IActionResult> Morphological(MorphologicalDto morphologicalDto)
     {
-        return Ok();
+        ImageData imageData = _imageRepository.GetImageData();
+        ImageData result = new()
+        {
+            base64ImageData = imageData.base64ImageData,
+            base64ModifiedImageData = imageData.base64ModifiedImageData,
+            fileType = imageData.fileType,
+            histogram = imageData.histogram
+        };
+
+        switch (morphologicalDto.operationType)
+        {
+            case MorphologicalType.Erosion:
+                result = await _morphologicalOperations.Erosion(result);
+                break;
+            case MorphologicalType.Dilation:
+                result = await _morphologicalOperations.Dilation(result);
+                break;
+            case MorphologicalType.Skeletonization:
+                break;
+            default:
+                return BadRequest();
+        }
+
+        return Ok(result);
     }
 
 
