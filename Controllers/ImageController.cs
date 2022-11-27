@@ -117,7 +117,7 @@ public class ImageController : ControllerBase
                 result = _filterOperations.GaussianBlur(result, 0);
                 break;
             case FilterType.Sharpness:
-                result = await _filterOperations.Sharpening(result);
+                result = await _filterOperations.Sharpening(result, filterDto.filterSize);
                 break;
             case FilterType.EdgeDetect:
                 result = _filterOperations.EdgeDetect(result);
@@ -127,6 +127,9 @@ public class ImageController : ControllerBase
                 break;
             case FilterType.Median:
                 result = await _filterOperations.Median(result, filterDto.filterSize);
+                break;
+            case FilterType.ContraHarmonical:
+                result = await _filterOperations.ContraHarmonical(result, filterDto.filterSize);
                 break;
             default:
                 return BadRequest();
@@ -182,7 +185,7 @@ public class ImageController : ControllerBase
             base64ModifiedImageData = imageDataDto.base64ImageData!,
             fileType = imageDataDto.fileType
         };
-        await _basicOperations.SaveImageToFile(imageData, imageData.fileType!);
+        await _basicOperations.SaveImageToFile(imageData, imageDataDto.filePath!);
         return Ok();
     }
 }

@@ -4,11 +4,12 @@ namespace DIP_Backend.ImageOperations.BaseOperations;
 
 public static class FileOperations
 {
-    public static async Task SaveImageWithFormat(SKBitmap bitmap, string fileType)
+    public static async Task SaveImageWithFormat(SKBitmap bitmap, string filePath)
     {
         await Task.Run(() =>
         {
-            string outputFileName = "modifiedImage." + fileType;
+            string outputFileName = filePath;
+            string fileType = filePath.Split(".").Last();
 
             SKEncodedImageFormat format;
 
