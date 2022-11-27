@@ -19,7 +19,7 @@ public class HistogramOperations
         // byte[] imageArray = Convert.FromBase64String(base64Image);
 
         // SKBitmap bitmap = SKBitmap.Decode(imageArray);
-        SKBitmap bitmap = BitmapAndBase64.GetBitmap(imageData.base64ImageData);
+        SKBitmap bitmap = BitmapAndBase64.GetBitmap(imageData.base64ModifiedImageData);
 
         int x = bitmap.Width;
         int y = bitmap.Height;
@@ -97,6 +97,7 @@ public class HistogramOperations
         }
 
         imageData.base64ModifiedImageData = BitmapAndBase64.GetBase64Image(bitmap, imageData);
+        imageData = ShowHistogram(imageData);
         return imageData;
     }
 }
