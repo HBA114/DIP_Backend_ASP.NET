@@ -123,10 +123,10 @@ public class ImageController : ControllerBase
                 result = _filterOperations.EdgeDetect(result);
                 break;
             case FilterType.Mean:
-                result = await _filterOperations.Mean(result);
+                result = await _filterOperations.Mean(result, filterDto.filterSize);
                 break;
             case FilterType.Median:
-                result = await _filterOperations.Median(result);
+                result = await _filterOperations.Median(result, filterDto.filterSize);
                 break;
             default:
                 return BadRequest();
