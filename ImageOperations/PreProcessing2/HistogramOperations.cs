@@ -1,4 +1,3 @@
-using DIP_Backend.Dtos;
 using DIP_Backend.Entities;
 using DIP_Backend.ImageOperations.BaseOperations;
 using SkiaSharp;
@@ -14,11 +13,7 @@ public class HistogramOperations
     public ImageData ShowHistogram(ImageData imageData)
     {
         Dictionary<int, int> _histogram = new Dictionary<int, int>();
-        // string base64Image = imageData.base64ImageData;
-        // imageData.base64ModifiedImageData = base64Image;
-        // byte[] imageArray = Convert.FromBase64String(base64Image);
-
-        // SKBitmap bitmap = SKBitmap.Decode(imageArray);
+        
         SKBitmap bitmap = BitmapAndBase64.GetBitmap(imageData.base64ModifiedImageData);
 
         int x = bitmap.Width;
