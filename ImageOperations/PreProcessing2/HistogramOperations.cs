@@ -12,7 +12,9 @@ public class HistogramOperations
 
     public ImageData ShowHistogram(ImageData imageData)
     {
-        Dictionary<int, int> _histogram = new Dictionary<int, int>();
+        Dictionary<int, int> _histogramRed = new Dictionary<int, int>();
+        Dictionary<int, int> _histogramGreen = new Dictionary<int, int>();
+        Dictionary<int, int> _histogramBlue = new Dictionary<int, int>();
         
         SKBitmap bitmap = BitmapAndBase64.GetBitmap(imageData.base64ModifiedImageData);
 
@@ -23,15 +25,29 @@ public class HistogramOperations
         {
             for (int j = 0; j < y; j++)
             {
-                int pixelValue = bitmap.GetPixel(i, j).Red;
-                if (_histogram.ContainsKey(pixelValue))
-                    _histogram[pixelValue] += 1;
+                int pixelValueRed = bitmap.GetPixel(i, j).Red;
+                int pixelValueGreen = bitmap.GetPixel(i, j).Green;
+                int pixelValueBlue = bitmap.GetPixel(i, j).Blue;
+                if (_histogramRed.ContainsKey(pixelValueRed))
+                    _histogramRed[pixelValueRed] += 1;
                 else
-                    _histogram.Add(pixelValue, 1);
+                    _histogramRed.Add(pixelValueRed, 1);
+                
+                if (_histogramGreen.ContainsKey(pixelValueGreen))
+                    _histogramGreen[pixelValueGreen] += 1;
+                else
+                    _histogramGreen.Add(pixelValueGreen, 1);
+                
+                if (_histogramBlue.ContainsKey(pixelValueBlue))
+                    _histogramBlue[pixelValueBlue] += 1;
+                else
+                    _histogramBlue.Add(pixelValueBlue, 1);
             }
         }
-        _histogram = _histogram.OrderBy(h => h.Key).ToDictionary(h => h.Key, h => h.Value);
-        imageData.histogram = _histogram;
+        _histogramRed = _histogramRed.OrderBy(h => h.Key).ToDictionary(h => h.Key, h => h.Value);
+        imageData.histogramRed = _histogramRed;
+        imageData.histogramGreen = _histogramGreen;
+        imageData.histogramBlue = _histogramBlue;
         return imageData;
     }
 
@@ -40,7 +56,10 @@ public class HistogramOperations
         // string base64Image = imageData.base64ImageData;
         // byte[] imageArray = Convert.FromBase64String(base64Image);
 
-        Dictionary<int, int> _histogram = ShowHistogram(imageData).histogram!;
+        Dictionary<int, int> _histogramRed = ShowHistogram(imageData).histogramRed!;
+        Dictionary<int, int> _histogramGreen = ShowHistogram(imageData).histogramGreen!;
+        Dictionary<int, int> _histogramBlue = ShowHistogram(imageData).histogramBlue!;
+        //! 
 
         // SKBitmap bitmap = SKBitmap.Decode(imageArray);
         SKBitmap bitmap = BitmapAndBase64.GetBitmap(imageData.base64ImageData);
@@ -49,11 +68,11 @@ public class HistogramOperations
 
         int x = bitmap.Width;
         int y = bitmap.Height;
-
+    
         //! Transfer Function
         //! Probability of that gray Scale in whole image (nk / (height*width))
         int cumulativeSum = 0;
-        foreach (var element in _histogram)
+        foreach (var element in _histogramRed)
         {
             cumulativeSum += element.Value;
             table.Add(new()

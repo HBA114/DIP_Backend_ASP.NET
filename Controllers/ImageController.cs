@@ -54,7 +54,9 @@ public class ImageController : ControllerBase
             base64ImageData = imageData.base64ImageData,
             base64ModifiedImageData = imageData.base64ModifiedImageData,
             fileType = imageData.fileType,
-            histogram = imageData.histogram
+            histogramRed = imageData.histogramRed,
+            histogramGreen = imageData.histogramGreen,
+            histogramBlue = imageData.histogramBlue,
         };
 
         switch (preProcessing1Dto.operationType)
@@ -81,7 +83,9 @@ public class ImageController : ControllerBase
             base64ImageData = imageData.base64ImageData,
             base64ModifiedImageData = imageData.base64ModifiedImageData,
             fileType = imageData.fileType,
-            histogram = imageData.histogram
+            histogramRed = imageData.histogramRed,
+            histogramGreen = imageData.histogramGreen,
+            histogramBlue = imageData.histogramBlue,
         };
 
         switch (preProcessing2Dto.operationType)
@@ -108,7 +112,9 @@ public class ImageController : ControllerBase
             base64ImageData = imageData.base64ImageData,
             base64ModifiedImageData = imageData.base64ModifiedImageData,
             fileType = imageData.fileType,
-            histogram = imageData.histogram
+            histogramRed = imageData.histogramRed,
+            histogramGreen = imageData.histogramGreen,
+            histogramBlue = imageData.histogramBlue,
         };
 
         switch (filterDto.filterType)
@@ -147,7 +153,9 @@ public class ImageController : ControllerBase
             base64ImageData = imageData.base64ImageData,
             base64ModifiedImageData = imageData.base64ModifiedImageData,
             fileType = imageData.fileType,
-            histogram = imageData.histogram
+            histogramRed = imageData.histogramRed,
+            histogramGreen = imageData.histogramGreen,
+            histogramBlue = imageData.histogramBlue,
         };
 
         switch (morphologicalDto.operationType)

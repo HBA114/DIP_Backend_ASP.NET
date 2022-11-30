@@ -5,7 +5,9 @@ public class ImageData
     public string base64ImageData { get; set; }
     public string base64ModifiedImageData { get; set; }
     public string? fileType { get; set; }
-    public Dictionary<int, int>? histogram { get; set; }
+    public Dictionary<int, int>? histogramRed { get; set; }
+    public Dictionary<int, int>? histogramGreen { get; set; }
+    public Dictionary<int, int>? histogramBlue { get; set; }
 
     public ImageData()
     {
