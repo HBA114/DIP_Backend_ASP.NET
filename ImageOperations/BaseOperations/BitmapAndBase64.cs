@@ -6,18 +6,13 @@ namespace DIP_Backend.ImageOperations.BaseOperations;
 public static class BitmapAndBase64
 {
     public static string GetBase64Image(SKBitmap bitmap, ImageData imageData){
-        string fileType = imageData.fileType!;
-        string outputFileName = "modifiedImage." + fileType;
+        // string fileType = imageData.fileType!;
+        string outputFileName = "modifiedImage." + "jpeg";
 
-        SKEncodedImageFormat format;
+        SKEncodedImageFormat format = SKEncodedImageFormat.Jpeg;
+        // SkiaSharp not supports bmp format. So base64 image operations runs on jpeg format
 
         FileStream output = File.OpenWrite(outputFileName);
-        if (fileType == "jpeg" || fileType == "jpg")
-            format = SKEncodedImageFormat.Jpeg;
-        else if(fileType == "png")
-            format = SKEncodedImageFormat.Png;
-        else
-            format = SKEncodedImageFormat.Bmp;
 
         SKManagedWStream outputStream = new SKManagedWStream(output);
 
