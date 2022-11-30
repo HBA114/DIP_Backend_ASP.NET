@@ -3,7 +3,7 @@ namespace DIP_Backend.Enums;
 public enum FilterType
 {
     GaussianBlur,
-    Sharpness,
+    Sharpening,
     EdgeDetect,
     Mean,
     Median,

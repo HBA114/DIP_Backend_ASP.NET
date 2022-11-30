@@ -68,7 +68,7 @@ public class ImageController : ControllerBase
                 result = _colorOperations.TurnToBlackAndWhiteByTresholdValue(result, preProcessing1Dto.tresholdValue);
                 break;
             default:
-                return BadRequest();
+                return Ok(result);
         }
 
         return Ok(result);
@@ -122,7 +122,7 @@ public class ImageController : ControllerBase
             case FilterType.GaussianBlur:
                 result = _filterOperations.GaussianBlur(result, 0);
                 break;
-            case FilterType.Sharpness:
+            case FilterType.Sharpening:
                 result = await _filterOperations.Sharpening(result, filterDto.filterSize);
                 break;
             case FilterType.EdgeDetect:
