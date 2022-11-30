@@ -4,6 +4,7 @@
 [![Build Status](https://shields.io/badge/.Net_Runtime-7-purple)](https://dotnet.microsoft.com/en-us/download/visual-studio-sdks)
 [![Build Status](https://shields.io/badge/SKiaSharp-2.88.3_-purple)](https://www.nuget.org/packages/SkiaSharp/)
 [![Build Status](https://shields.io/badge/SKiaSharp.NativeAssets.Linux-2.88.3_-purple)](https://www.nuget.org/packages/SkiaSharp/)
+[![Build Status](https://shields.io/badge/SKiaSharp.NativeAssets.Win32-2.88.3_-purple)](https://www.nuget.org/packages/SkiaSharp/)
 
 - [Requirements](#requirements)
 - [How To Run](#how-to-run)
