@@ -45,6 +45,8 @@ public class HistogramOperations
             }
         }
         _histogramRed = _histogramRed.OrderBy(h => h.Key).ToDictionary(h => h.Key, h => h.Value);
+        _histogramGreen = _histogramGreen.OrderBy(h => h.Key).ToDictionary(h => h.Key, h => h.Value);
+        _histogramBlue = _histogramBlue.OrderBy(h => h.Key).ToDictionary(h => h.Key, h => h.Value);
         imageData.histogramRed = _histogramRed;
         imageData.histogramGreen = _histogramGreen;
         imageData.histogramBlue = _histogramBlue;
@@ -104,11 +106,11 @@ public class HistogramOperations
             }
         }
 
-        foreach (var item in table)
-        {
-            Console.WriteLine("Tone : " + item.GrayTone + ", Cumulative Sum : " + item.CumulativeSummary +
-            ", Cumulative Probability : " + item.CumulativeProbability + ", New Tone : " + item.NewGrayTone);
-        }
+        // foreach (var item in table)
+        // {
+        //     Console.WriteLine("Tone : " + item.GrayTone + ", Cumulative Sum : " + item.CumulativeSummary +
+        //     ", Cumulative Probability : " + item.CumulativeProbability + ", New Tone : " + item.NewGrayTone);
+        // }
 
         imageData.base64ModifiedImageData = BitmapAndBase64.GetBase64Image(bitmap, imageData);
         imageData = ShowHistogram(imageData);
