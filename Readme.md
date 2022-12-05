@@ -13,6 +13,8 @@
 ## Requirements
 - This project needs [.net7](https://dotnet.microsoft.com/en-us/download/dotnet/7.0) and [flutter 3.3.8](https://docs.flutter.dev/development/tools/sdk/releases) to run.
 
+- Frontend code which written in flutter is available at [dip_project_frontend_flutter](https://github.com/HBA114/dip_project_frontend_flutter) repository. For more information about frontend visit repository.
+
 ## How To Run
 - First get all dependencies with:
 ```shell
