@@ -9,8 +9,6 @@ var builder = WebApplication.CreateBuilder(args);
 
 // http://localhost:5071/swagger/index.html
 
-// Add services to the container.
-
 builder.Services.AddSingleton<InMemoryImageRepository>();
 builder.Services.AddSingleton<BasicOperations>();
 builder.Services.AddSingleton<ColorOperations>();
@@ -19,22 +17,10 @@ builder.Services.AddSingleton<FilterOperations>();
 builder.Services.AddSingleton<MorphologicalOperations>();
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-// if (app.Environment.IsDevelopment())
-// {
-//     app.UseSwagger();
-//     app.UseSwaggerUI();
-// }
-
-// app.UseHttpsRedirection();
-
-// app.UseAuthorization();
 
 app.MapControllers();
 

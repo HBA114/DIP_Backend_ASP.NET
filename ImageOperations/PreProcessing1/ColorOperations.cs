@@ -42,7 +42,7 @@ public class ColorOperations
         return imageData;
     }
 
-    public ImageData TurnToBlackAndWhiteByTresholdValue(ImageData imageData, int? tresholdValue)
+    public ImageData TurnToBlackAndWhiteByThresholdValue(ImageData imageData, int? tresholdValue)
     {
         imageData = TurnToGrayScale(imageData);
 

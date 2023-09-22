@@ -4,24 +4,23 @@ namespace DIP_Backend.Repositories;
 
 public class InMemoryImageRepository
 {
-    // ImageData imageData;
-    public ImageData imageData { get; set; }
+    private ImageData _imageData;
     public InMemoryImageRepository()
     {
-        imageData = new ImageData();
+        _imageData = new ImageData();
     }
 
     public ImageData SetImageData(string data, string modifiedData, string fileType)
     {
-        imageData.base64ImageData = data;
-        imageData.base64ModifiedImageData = modifiedData;
-        imageData.fileType = fileType;
+        _imageData.base64ImageData = data;
+        _imageData.base64ModifiedImageData = modifiedData;
+        _imageData.fileType = fileType;
 
-        return imageData;
+        return _imageData;
     }
 
     public ImageData GetImageData()
     {
-        return imageData;
+        return _imageData;
     }
 }

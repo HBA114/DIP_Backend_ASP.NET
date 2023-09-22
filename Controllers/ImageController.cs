@@ -7,6 +7,7 @@ using DIP_Backend.ImageOperations.Morphological;
 using DIP_Backend.ImageOperations.PreProcessing1;
 using DIP_Backend.ImageOperations.PreProcessing2;
 using DIP_Backend.Repositories;
+
 using Microsoft.AspNetCore.Mvc;
 
 namespace DIP_Backend.Controllers;
@@ -59,19 +60,12 @@ public class ImageController : ControllerBase
             histogramBlue = imageData.histogramBlue,
         };
 
-        switch (preProcessing1Dto.operationType)
+        return preProcessing1Dto.operationType switch
         {
-            case PreProcessing1Type.GrayScale:
-                result = _colorOperations.TurnToGrayScale(result);
-                break;
-            case PreProcessing1Type.BlackWhite:
-                result = _colorOperations.TurnToBlackAndWhiteByTresholdValue(result, preProcessing1Dto.tresholdValue);
-                break;
-            default:
-                return Ok(result);
-        }
-
-        return Ok(result);
+            PreProcessing1Type.GrayScale => Ok(_colorOperations.TurnToGrayScale(result)),
+            PreProcessing1Type.BlackWhite => Ok(_colorOperations.TurnToBlackAndWhiteByThresholdValue(result, preProcessing1Dto.thresholdValue)),
+            _ => Ok(result)
+        };
     }
 
     [HttpPost("PreProcessing2")]
@@ -88,19 +82,12 @@ public class ImageController : ControllerBase
             histogramBlue = imageData.histogramBlue,
         };
 
-        switch (preProcessing2Dto.operationType)
+        return preProcessing2Dto.operationType switch
         {
-            case PreProcessing2Type.ShowHistogram:
-                result = _histogramOperations.ShowHistogram(result);
-                break;
-            case PreProcessing2Type.HistogramEqualization:
-                result = _histogramOperations.HistogramEqualization(result);
-                break;
-            default:
-                return BadRequest();
-        }
-
-        return Ok(result);
+            PreProcessing2Type.ShowHistogram => Ok(_histogramOperations.ShowHistogram(result)),
+            PreProcessing2Type.HistogramEqualization => Ok(_histogramOperations.HistogramEqualization(result)),
+            _ => BadRequest()
+        };
     }
 
     [HttpPost("Filters")]
@@ -117,31 +104,16 @@ public class ImageController : ControllerBase
             histogramBlue = imageData.histogramBlue,
         };
 
-        switch (filterDto.filterType)
+        return filterDto.filterType switch
         {
-            case FilterType.GaussianBlur:
-                result = _filterOperations.GaussianBlur(result, 0);
-                break;
-            case FilterType.Sharpening:
-                result = await _filterOperations.Sharpening(result, filterDto.filterSize);
-                break;
-            case FilterType.EdgeDetect:
-                result = _filterOperations.EdgeDetect(result);
-                break;
-            case FilterType.Mean:
-                result = await _filterOperations.Mean(result, filterDto.filterSize);
-                break;
-            case FilterType.Median:
-                result = await _filterOperations.Median(result, filterDto.filterSize);
-                break;
-            case FilterType.ContraHarmonical:
-                result = await _filterOperations.ContraHarmonical(result, filterDto.filterSize);
-                break;
-            default:
-                return BadRequest();
-        }
-
-        return Ok(result);
+            FilterType.GaussianBlur => Ok(_filterOperations.GaussianBlur(result, 0)),
+            FilterType.Sharpening => Ok(await _filterOperations.Sharpening(result, filterDto.filterSize)),
+            FilterType.EdgeDetect => Ok(_filterOperations.EdgeDetect(result)),
+            FilterType.Mean => Ok(await _filterOperations.Mean(result, filterDto.filterSize)),
+            FilterType.Median => Ok(await _filterOperations.Median(result, filterDto.filterSize)),
+            FilterType.ContraHarmonical => Ok(await _filterOperations.ContraHarmonical(result, filterDto.filterSize)),
+            _ => BadRequest()
+        };
     }
 
     [HttpPost("Morphological")]
@@ -158,21 +130,13 @@ public class ImageController : ControllerBase
             histogramBlue = imageData.histogramBlue,
         };
 
-        switch (morphologicalDto.operationType)
+        return morphologicalDto.operationType switch
         {
-            case MorphologicalType.Erosion:
-                result = await _morphologicalOperations.Erosion(result);
-                break;
-            case MorphologicalType.Dilation:
-                result = await _morphologicalOperations.Dilation(result);
-                break;
-            case MorphologicalType.Skeletonization:
-                break;
-            default:
-                return BadRequest();
-        }
-
-        return Ok(result);
+            MorphologicalType.Erosion => Ok(await _morphologicalOperations.Erosion(result)),
+            MorphologicalType.Dilation => Ok(await _morphologicalOperations.Dilation(result)),
+            MorphologicalType.Skeletonization => throw new NotImplementedException("Skeletonization Not Implemented"),
+            _ => BadRequest()
+        };
     }
 
 

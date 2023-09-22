@@ -1,0 +1,19 @@
+{
+    "files.exclude": {
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/CVS": true,
+        "**/.DS_Store": true,
+        "**/Thumbs.db": true,
+        "**/bin": true,
+        "**/obj": true
+    },
+    "explorerExclude.backup": {},
+    "cSpell.words": [
+        "Dtos",
+        "Harmonical",
+        "Skeletonization",
+        "Skia"
+    ]
+}
