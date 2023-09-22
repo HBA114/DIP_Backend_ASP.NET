@@ -1,5 +1,3 @@
-using SkiaSharp;
-
 namespace DIP_Backend.ImageOperations.BaseOperations;
 
 public static class FileOperations

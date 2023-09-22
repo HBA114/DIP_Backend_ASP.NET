@@ -1,11 +1,13 @@
 using DIP_Backend.Entities;
+
 using SkiaSharp;
 
 namespace DIP_Backend.ImageOperations.BaseOperations;
 
 public static class BitmapAndBase64
 {
-    public static string GetBase64Image(SKBitmap bitmap, ImageData imageData){
+    public static string GetBase64Image(SKBitmap bitmap, ImageData imageData)
+    {
         // string fileType = imageData.fileType!;
         string outputFileName = "modifiedImage." + "jpeg";
 
